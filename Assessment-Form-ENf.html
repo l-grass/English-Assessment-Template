@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online 1-on-1 English Learning Assessment Form</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+        
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #667eea;
+            margin-bottom: 20px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group label {
+            font-weight: 500;
+            color: #555;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .form-group input[type="text"],
+        .form-group input[type="date"],
+        .form-group textarea {
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input[type="text"]:focus,
+        .form-group input[type="date"]:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+        
+        .assessment-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .assessment-label {
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+        
+        .checkbox-item input[type="radio"] {
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+        }
+        
+        .checkbox-item label {
+            margin-bottom: 0;
+            cursor: pointer;
+            font-weight: normal;
+            font-size: 14px;
+        }
+        
+        .comments-box {
+            background: #f0f7ff;
+            padding: 12px;
+            border-left: 4px solid #667eea;
+            border-radius: 4px;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        
+        .comments-box textarea {
+            width: 100%;
+            min-height: 80px;
+            padding: 10px;
+            border: 1px solid #d0e4ff;
+            border-radius: 4px;
+            font-family: inherit;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        button {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-save {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-reset {
+            background: #e0e0e0;
+            color: #333;
+        }
+        
+        .btn-reset:hover {
+            background: #d0d0d0;
+        }
+        
+        .btn-print {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        .btn-print:hover {
+            background: #45a049;
+        }
+        
+        .success-message {
+            display: none;
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 500;
+            animation: slideDown 0.3s ease-out;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .checkbox-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .header h1 {
+                font-size: 22px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+        }
+        
+        @media print {
+            body {
+                background: white;
+            }
+            
+            .button-group {
+                display: none;
+            }
+            
+            .container {
+                box-shadow: none;
+                border-radius: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Online 1-on-1 English Learning Assessment Form</h1>
+            <p>Student Progress and Performance Evaluation</p>
+        </div>
+        
+        <form id="assessmentForm" class="content">
+            <div id="successMessage" class="success-message">✓ Assessment information saved successfully!</div>
+            
+            <!-- Basic Information -->
+            <div class="section">
+                <div class="section-title">Basic Information</div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Student Name</label>
+                        <input type="text" name="studentName" placeholder="Enter student's name">
+                    </div>
+                    <div class="form-group">
+                        <label>Assessment Date</label>
+                        <input type="date" name="assessmentDate">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Assessment Period</label>
+                        <input type="text" name="period" placeholder="e.g., Week 1, Month 1">
+                    </div>
+                    <div class="form-group">
+                        <label>Teacher Name</label>
+                        <input type="text" name="teacher" placeholder="Enter teacher's name">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Listening Skills Assessment -->
+            <div class="section">
+                <div class="section-title">Listening Skills Assessment</div>
+                
+                <div class="assessment-item">
+                    <span class="assessment-label">Daily Conversation Comprehension</span>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="radio" name="listening1" value="Excellent" id="l1_1">
+                            <label for="l1_1">Excellent</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="radio" name="listening1" value="Good" id="l1_2">
+                            <label for="l1_2">Good</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="radio" name="listening1" value="Needs Improvement" id="l1_3">
+                            <label for="l1_3">Needs Improvement</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="assessment-item">
+                    <span class="assessment-label">Key Information Identification</span>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="radio" name="listening2" value="Excellent" id="l2_1">
+                            <label for="l2_1">Excellent</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="radio" name="listening2" value="Good" id="l2_2">
+                            <label for="l2_2">Good</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="radio" name="listening2" value="Needs Improvement" id="l2_3">
+                            <label for="l2_3">Needs Improvement</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="comments-box">
+                    <label>Comments:</label>
+                    <textarea name="listeningComments" placeholder="Please enter detailed comments about listening skills"></textarea>
+                </div>
+            </div>
+            
+            <!-- Speaking Skills Assessment -->
+            <div class="section">
+                <div class="section-title">Speaking Skills Assessment</div>
+                
+                <div class="assessment-item">
+                    <span class="assessment-label">Pronunciation & Fluency</span>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="radio" name="speaking1" value="Excellent" id="s1_1">
+                            <label for="s1_1">Excellent</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="radio" name="speaking1" value="Good" id="s1_2">
+                            <label for="s1_2">Good</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="radio" name="speaking1" value="Needs Improvement" id="s1_3">
+                            <label for="s1_3">Needs Improvement</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="assessment-item">
+                    <span class="assessment-label">Communication Ability</span>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="radio" name="speaking2" value="Excellent" id="s2_1">
+                            <label for="s2_1">Excellent</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="radio" name="speaking2" value="Good" id="s2_2">
+                            <label for="s2_2">Good</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="radio" name="speaking2" value="Needs Improvement" id="s2_3">
+                            <label for="s2_3">Needs Improvement</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="comments-box">
+                    <label>Comments:</label>
+                    <textarea name="speakingComments" placeholder="Please enter detailed comments about speaking skills"></textarea>
+                </div>
+            </div>
+            
+            <!-- Reading Skills Assessment -->
+            <div class="section">
+                <div class="section-title">Reading Skills Assessment</div>
+                
+                <div class="assessment-item">
+                    <span class="assessment-label">Vocabulary & Comprehension</span>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="radio" name="reading1" value="Excellent" id="r1_1">
+                            <label for="r1_1">Excellent</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="radio" name="reading1" value="Good" id="r1_2">
+                            <label for="r1_2">Good</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="radio" name="reading1" value="Needs Improvement" id="r1_3">
+                            <label for="r1_3">Needs Improvement</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="assessment-item">
+                    <span class="assessment-label">Reading Speed & Accuracy</span>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="radio" name="reading2" value="Excellent" id="r2_1">
+                            <label for="r2_1">Excellent</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="radio" name="reading2" value="Good" id="r2_2">
+                            <label for="r2_2">Good</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="radio" name="reading2" value="Needs Improvement" id="r2_3">
+                            <label for="r2_3">Needs Improvement</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="comments-box">
+                    <label>Comments:</label>
+                    <textarea name="readingComments" placeholder="Please enter detailed comments about reading skills"></textarea>
+                </div>
+            </div>
+            
+            
+            
+            <!-- Overall Assessment & Suggestions -->
+            <div class="section">
+                <div class="section-title">Overall Assessment & Suggestions</div>
+                
+                <div class="form-group">
+                    <label>Strengths:</label>
+                    <textarea name="strengths" placeholder="Please describe the student's main strengths"></textarea>
+                </div>
+                
+                <div class="form-group" style="margin-top: 15px;">
+                    <label>Areas for Improvement:</label>
+                    <textarea name="improvements" placeholder="Please describe areas that need improvement"></textarea>
+                </div>
+                
+                <div class="form-group" style="margin-top: 15px;">
+                    
+            </div>
+            
+            <!-- Signature Section -->
+            <div class="section">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Teacher Signature</label>
+                        <input type="text" name="teacherSign" placeholder="Enter your signature or name">
+                    </div>
+                    <div class="form-group">
+                        <label>Date</label>
+                        <input type="date" name="signDate">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Buttons -->
+            <div class="button-group">
+                <button type="button" class="btn-save" onclick="saveForm()">💾 Save</button>
+                <button type="button" class="btn-print" onclick="window.print()">🖨️ Print</button>
+                <button type="reset" class="btn-reset">↺ Reset</button>
+            </div>
+        </form>
+    </div>
+    
+    <script>
+        const form = document.getElementById('assessmentForm');
+        const successMessage = document.getElementById('successMessage');
+        
+        // Save form data
+        function saveForm() {
+            const data = {};
+            
+            // Get all form fields
+            const inputs = form.querySelectorAll('input, textarea, select');
+            inputs.forEach(element => {
+                if (element.name) {
+                    if (element.type === 'radio') {
+                        if (element.checked) {
+                            data[element.name] = element.value;
+                        }
+                    } else if (element.type !== 'button' && element.type !== 'submit' && element.type !== 'reset') {
+                        data[element.name] = element.value;
+                    }
+                }
+            });
+            
+            // Save to localStorage
+            localStorage.setItem('assessmentForm', JSON.stringify(data));
+            
+            // Show success message
+            successMessage.style.display = 'block';
+            successMessage.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+            }, 3000);
+            
+            console.log('✓ Assessment form saved successfully:', data);
+        }
+        
+        // Restore form data from localStorage on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            const savedData = localStorage.getItem('assessmentForm');
+            if (savedData) {
+                try {
+                    const data = JSON.parse(savedData);
+                    Object.keys(data).forEach(key => {
+                        const elements = form.querySelectorAll(`[name="${key}"]`);
+                        elements.forEach(element => {
+                            if (element.type === 'radio') {
+                                if (element.value === data[key]) {
+                                    element.checked = true;
+                                }
+                            } else {
+                                element.value = data[key];
+                            }
+                        });
+                    });
+                    console.log('✓ Previous data restored from local storage');
+                } catch (e) {
+                    console.error('Error restoring data:', e);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
